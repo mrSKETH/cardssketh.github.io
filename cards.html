@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SKETH — Neon Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #0b0220;
+      --purple-1: #6a00ff;
+      --purple-2: #8b5cf6;
+      --accent: #c77dff;
+      --text: #efe6ff;
+      --glass: rgba(255,255,255,0.07);
+    }
+    * {margin:0;padding:0;box-sizing:border-box;}
+
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: radial-gradient(circle at 20% 20%, #1a0033, #0b0220 70%);
+      color: var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+      position: relative;
+    }
+
+    /* === Фон === */
+    .bg-rotate {
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(from 0deg at 50% 50%, #6a00ff22, #8b5cf622, #c77dff11, #6a00ff22);
+      animation: spin 40s linear infinite;
+      z-index: -3;
+    }
+    @keyframes spin {to{transform:rotate(360deg)}}
+
+    .particles {
+      position: fixed; inset:0; z-index:-2;
+      pointer-events:none;
+    }
+    .particle {
+      position:absolute;width:6px;height:6px;
+      background: var(--accent);
+      border-radius:50%;
+      box-shadow:0 0 12px var(--accent);
+      opacity:.6;
+      animation: floatUp 12s linear infinite;
+    }
+    @keyframes floatUp {
+      from{transform:translateY(100vh) scale(.6);opacity:0}
+      20%{opacity:1}
+      to{transform:translateY(-10vh) scale(1);opacity:0}
+    }
+
+    /* === Welcome === */
+    #welcome-screen {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:20px;
+      animation: fadeIn 1s ease forwards;
+    }
+    .enter-btn {
+      background: linear-gradient(90deg,var(--purple-1),var(--purple-2));
+      padding:18px 42px;
+      border-radius:20px;
+      font-size:22px;font-weight:700;
+      color:#fff;cursor:pointer;
+      border:none;outline:none;
+      text-shadow:0 0 8px rgba(106,0,255,0.9);
+      box-shadow:0 0 25px rgba(106,0,255,0.6);
+      transition: all 0.4s ease;
+    }
+    .enter-btn:hover {
+      transform: scale(1.15) translateY(-5px);
+      box-shadow:0 0 50px rgba(138,43,226,1);
+    }
+
+    .hidden {display:none;}
+
+    /* === Main === */
+    main {
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:60px 20px;
+      opacity:0;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay:.6s;
+    }
+    .main-center {
+      max-width:1100px;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:30px;
+    }
+
+    /* Ник с typing */
+    .nickname {
+      font-size:52px;
+      font-weight:900;
+      text-shadow:0 0 25px rgba(106,0,255,0.9),0 0 50px rgba(138,43,226,0.7);
+      white-space:nowrap;
+      border-right:3px solid var(--accent);
+      overflow:hidden;
+      width:0;
+      animation: typing 3s steps(12) forwards, blink .7s step-end infinite;
+    }
+    @keyframes typing {to{width:12ch}}
+    @keyframes blink {50%{border-color:transparent}}
+
+    /* === Карточки === */
+    .section {
+      width:100%;
+      background: var(--glass);
+      backdrop-filter: blur(15px) saturate(180%);
+      border-radius:20px;
+      padding:24px;
+      box-shadow:0 0 25px rgba(106,0,255,0.3);
+      transition: transform .4s ease, box-shadow .4s ease;
+      perspective:1000px;
+    }
+    .section:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow:0 0 45px rgba(138,43,226,0.6);
+    }
+    .section h2 {
+      text-align:center;
+      margin-bottom:16px;
+      font-size:22px;
+      text-shadow:0 0 10px rgba(106,0,255,0.6);
+    }
+
+    /* === Кнопки === */
+    .links, .repos {
+      display:flex; gap:16px;
+      overflow-x:auto;
+      padding-bottom:8px;
+      scroll-behavior:smooth;
+    }
+    .links::-webkit-scrollbar, .repos::-webkit-scrollbar {display:none;}
+
+    .link-btn, .repo-btn {
+      background:linear-gradient(135deg,var(--purple-1),var(--purple-2));
+      color:#fff; font-weight:600;
+      padding:12px 20px;
+      border-radius:14px;
+      flex-shrink:0;
+      white-space:nowrap;
+      display:flex; align-items:center; gap:8px;
+      text-decoration:none; cursor:pointer;
+      box-shadow:0 0 15px rgba(106,0,255,0.4);
+      transition: all .3s ease;
+    }
+    .link-btn:hover, .repo-btn:hover {
+      transform:scale(1.12) rotate(-1deg);
+      box-shadow:0 0 30px rgba(138,43,226,1);
+    }
+
+    /* === Display hidden === */
+    .link-display, .repo-display {
+      margin-top:8px;
+      padding:6px 12px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.12);
+      font-size:14px;
+      opacity:0; max-height:0;
+      overflow:hidden;
+      transition:all 0.4s ease;
+    }
+    .show {opacity:1;max-height:60px;}
+
+    /* Animations */
+    @keyframes fadeIn {from{opacity:0} to{opacity:1}}
+    @keyframes fadeInUp {from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);}}
+
+    @media(max-width:720px) {
+      .nickname{font-size:34px}
+      .section{padding:16px}
+      .link-btn,.repo-btn{padding:10px 14px;font-size:14px}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-rotate"></div>
+
+  <div class="particles">
+    <div class="particle" style="left:10%;animation-delay:0s"></div>
+    <div class="particle" style="left:25%;animation-delay:3s"></div>
+    <div class="particle" style="left:50%;animation-delay:6s"></div>
+    <div class="particle" style="left:70%;animation-delay:1s"></div>
+    <div class="particle" style="left:90%;animation-delay:4s"></div>
+  </div>
+
+  <!-- Welcome screen -->
+  <div id="welcome-screen">
+    <button class="enter-btn" id="enterBtn">Enter</button>
+  </div>
+
+  <!-- Main content -->
+  <main id="main-content" class="hidden">
+    <div class="main-center">
+      <h1 class="nickname">SKETH</h1>
+
+      <div class="section">
+        <h2>What?</h2>
+        <p style="text-align:center;max-width:700px;margin:0 auto;">
+          ¿qué quieres?
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>Контакты</h2>
+        <div class="links">
+          <div><div class="link-btn" data-link="https://t.me/+BYAMQj_TYpQ2ZGE1"><i class="fa-brands fa-telegram"></i> Telegram chanel</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="@mokmorka"><i class="fa-brands fa-telegram"></i> Telegram (Основной)</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="@mrSKETH"><i class="fa-brands fa-telegram"></i> Telegram (Доп)</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="mrsketh"><i class="fa-brands fa-discord"></i> Discord</div><div class="link-display"></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Соцсети</h2>
+        <div class="links">
+          <div><div class="link-btn" data-link="https://youtube.com/@qSKETHp"><i class="fa-brands fa-youtube"></i> YouTube</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="https://tiktok.com/@sketh696"><i class="fa-brands fa-tiktok"></i> TikTok</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="https://reddit.com/user/SKETHqq"><i class="fa-brands fa-reddit"></i> Reddit</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="https://open.spotify.com/user/31t552nhwqalsle5fysfp5ohefda"><i class="fa-brands fa-tiktok"></i>Spotify</div><div class="link-display"></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Игры</h2>
+        <div class="links">
+          <div><div class="link-btn" data-link="https://steamcommunity.com/id/mrSKETH/"><i class="fa-brands fa-steam"></i> Steam</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="https://steamcommunity.com/profiles/76561198846133724/"><i class="fa-brands fa-steam"></i> Steam(cs2)</div><div class="link-display"></div></div>
+          <div><div class="link-btn" data-link="https://worldofwarcraft.blizzard.com/ru-ru/character/eu/eversong/Хскетчх/"><i class="fa-solid fa-gamepad"></i> World Of Warcraft(новый)</div><div class="link-display"></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>GitHub</h2>
+        <div class="links">
+          <div><div class="link-btn" data-link="https://github.com/mrSKETH"><i class="fa-brands fa-github"></i> GitHub</div><div class="link-display"></div></div>
+        </div>
+        <h3 style="text-align:center;margin:15px 0;">Репозитории</h3>
+        <div class="repos">
+          <div><div class="repo-btn" data-link="https://github.com/mrSKETH/Arch-install-guide---SKETH" data-desc="">Arch Install Guide</div><div class="repo-display"></div></div>
+          <div><div class="repo-btn" data-link="https://github.com/mrSKETH/PCCP-sketh" data-desc="">PCCP</div><div class="repo-display"></div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const enterBtn=document.getElementById('enterBtn');
+    const welcome=document.getElementById('welcome-screen');
+    const mainContent=document.getElementById('main-content');
+
+    enterBtn.addEventListener('click',()=>{
+      welcome.style.display='none';
+      mainContent.classList.remove('hidden');
+    });
+
+    function toggleDisplay(btn, display, isRepo=false) {
+      if(display.classList.contains("show")){
+        display.classList.remove("show");
+        setTimeout(()=>display.textContent="",300);
+      } else {
+        display.textContent=isRepo?btn.dataset.link+" — "+btn.dataset.desc:btn.dataset.link;
+        display.classList.add("show");
+      }
+    }
+
+    document.querySelectorAll('.link-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>toggleDisplay(btn,btn.nextElementSibling));
+    });
+    document.querySelectorAll('.repo-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>toggleDisplay(btn,btn.nextElementSibling,true));
+    });
+
+    document.querySelectorAll('.links,.repos').forEach(c=>{
+      c.addEventListener('wheel',e=>{
+        if(e.deltaY!==0){e.preventDefault();c.scrollLeft+=e.deltaY;}
+      });
+    });
+  </script>
+</body>
+</html>
