@@ -315,22 +315,97 @@
       mainContent.classList.remove('hidden');
     });
 
-    function toggleDisplay(btn, display, isRepo=false) {
-      if(display.classList.contains("show")){
-        display.classList.remove("show");
-        setTimeout(()=>display.textContent="",300);
-      } else {
-        display.textContent=isRepo?btn.dataset.link+" — "+btn.dataset.desc:btn.dataset.link;
-        display.classList.add("show");
-      }
-    }
+    // Функция для копирования в буфер обмена
+async function copyToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (err) {
+    // Fallback для старых браузеров
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    return true;
+  }
+}
 
-    document.querySelectorAll('.link-btn').forEach(btn=>{
-      btn.addEventListener('click',()=>toggleDisplay(btn,btn.nextElementSibling));
-    });
-    document.querySelectorAll('.repo-btn').forEach(btn=>{
-      btn.addEventListener('click',()=>toggleDisplay(btn,btn.nextElementSibling,true));
-    });
+// Функция обработки клика по кнопке (только копирование)
+function handleLinkClick(btn, isRepo = false) {
+  const link = btn.dataset.link;
+  const desc = btn.dataset.desc || '';
+  
+  if (!link) return;
+  
+  // Копируем оригинальную ссылку (без изменений)
+  copyToClipboard(link).then(() => {
+    // Показываем уведомление о копировании
+    showCopyNotification(btn);
+  });
+  
+  // Убрал открытие ссылки - теперь только копирование
+}
+
+// Функция показа уведомления о копировании
+function showCopyNotification(btn) {
+  // Создаем элемент уведомления
+  const notification = document.createElement('div');
+  notification.textContent = 'Ссылка скопированна!';
+  notification.style.cssText = `
+    position: fixed;
+    background: linear-gradient(135deg, var(--purple-1), var(--purple-2));
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1000;
+    animation: fadeInOut 2s ease-in-out;
+    box-shadow: 0 0 20px rgba(106,0,255,0.6);
+    top: 20px;
+    right: 20px;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Удаляем уведомление через 2 секунды
+  setTimeout(() => {
+    notification.remove();
+  }, 2000);
+}
+
+// Добавляем анимацию для уведомления
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }
+`;
+document.head.appendChild(style);
+
+// Обработчики для кнопок (только копирование)
+document.querySelectorAll('.link-btn').forEach(btn => {
+  btn.addEventListener('click', () => handleLinkClick(btn));
+});
+
+document.querySelectorAll('.repo-btn').forEach(btn => {
+  btn.addEventListener('click', () => handleLinkClick(btn, true));
+});
+
+// Оставляем скролл для контейнеров
+document.querySelectorAll('.links,.repos').forEach(c => {
+  c.addEventListener('wheel', e => {
+    if(e.deltaY !== 0) {
+      e.preventDefault();
+      c.scrollLeft += e.deltaY;
+    }
+  });
+});
 
     document.querySelectorAll('.links,.repos').forEach(c=>{
       c.addEventListener('wheel',e=>{
