@@ -222,6 +222,86 @@
       .link-btn,.repo-btn{padding:10px 14px;font-size:14px}
       .games-grid{grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));}
     }
+
+  /* === Секция "О себе" === */
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.about-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(106,0,255,0.2);
+}
+
+.about-item:last-child {
+  border-bottom: none;
+}
+
+.about-label {
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(199,125,255,0.5);
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.about-value {
+  flex: 1;
+  line-height: 1.5;
+}
+
+/* Анимация для появления элементов */
+.about-item {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInRight 0.6s ease forwards;
+}
+
+.about-item:nth-child(1) { animation-delay: 0.1s; }
+.about-item:nth-child(2) { animation-delay: 0.2s; }
+.about-item:nth-child(3) { animation-delay: 0.3s; }
+.about-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 720px) {
+  .about-item {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .about-label {
+    min-width: auto;
+  }
+}
+  
+  </style>
+</head>
+<body>
+  <div class="bg-rotate"></div>
+
+  <div class="particles">
+    <div class="particle" style="left:10%;animation-delay:0s"></div>
+    <div class="particle" style="left:25%;animation-delay:3s"></div>
+    <div class="particle" style="left:50%;animation-delay:6s"></div>
+    <div class="particle" style="left:70%;animation-delay:1s"></div>
+    <div class="particle" style="left:90%;animation-delay:4s"></div>
+  </div>
+
+    
   </style>
 </head>
 <body>
@@ -294,6 +374,25 @@
           <div><div class="repo-btn" data-link="https://github.com/mrSKETH/PCCP-sketh" data-desc="">PCCP</div><div class="repo-display"></div></div>
         </div>
       </div>
+
+      <!-- Секция "О себе" -->
+<div class="section">
+  <h2>О себе</h2>
+  <div class="about-content">
+    <div class="about-item">
+      <span class="about-label">Возраст:</span>
+      <span class="about-value" id="ageValue">19 августа 2007 года</span>
+    </div>
+    <div class="about-item">
+      <span class="about-label">А?:</span>
+      <span class="about-value" id="interestsValue">ага</span>
+    </div>
+    <div class="about-item">
+      <span class="about-label">О себе:</span>
+      <span class="about-value" id="aboutValue">хочешь знать, спроси</span>
+    </div>
+  </div>
+</div>
       
             <!-- Новая секция "Мои игры" -->
       <div class="section">
