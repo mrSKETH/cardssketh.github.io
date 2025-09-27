@@ -25,7 +25,6 @@
       position: relative;
     }
 
-    /* === Фон === */
     .bg-rotate {
       position: fixed;
       inset: 0;
@@ -53,7 +52,6 @@
       to{transform:translateY(-10vh) scale(1);opacity:0}
     }
 
-    /* === Welcome === */
     #welcome-screen {
       min-height:100vh;
       display:flex;
@@ -81,7 +79,6 @@
 
     .hidden {display:none;}
 
-    /* === Main === */
     main {
       min-height:100vh;
       display:flex;
@@ -101,7 +98,6 @@
       gap:30px;
     }
 
-    /* Ник с typing */
     .nickname {
       font-size:52px;
       font-weight:900;
@@ -115,7 +111,6 @@
     @keyframes typing {to{width:12ch}}
     @keyframes blink {50%{border-color:transparent}}
 
-    /* === Карточки === */
     .section {
       width:100%;
       background: var(--glass);
@@ -137,7 +132,6 @@
       text-shadow:0 0 10px rgba(106,0,255,0.6);
     }
 
-    /* === Кнопки === */
     .links, .repos {
       display:flex; gap:16px;
       overflow-x:auto;
@@ -163,7 +157,6 @@
       box-shadow:0 0 30px rgba(138,43,226,1);
     }
 
-    /* === Display hidden === */
     .link-display, .repo-display {
       margin-top:8px;
       padding:6px 12px;
@@ -176,7 +169,6 @@
     }
     .show {opacity:1;max-height:60px;}
 
-    /* === Мои игры === */
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -212,7 +204,6 @@
       font-size: 16px;
     }
 
-    /* Animations */
     @keyframes fadeIn {from{opacity:0} to{opacity:1}}
     @keyframes fadeInUp {from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);}}
 
@@ -223,7 +214,6 @@
       .games-grid{grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));}
     }
   
-  /* === Секция "О себе" === */
 .about-content {
   display: flex;
   flex-direction: column;
@@ -257,7 +247,6 @@
   line-height: 1.5;
 }
 
-/* Анимация для появления элементов */
 .about-item {
   opacity: 0;
   transform: translateX(-20px);
@@ -276,7 +265,6 @@
   }
 }
 
-/* Адаптивность */
 @media (max-width: 720px) {
   .about-item {
     flex-direction: column;
@@ -301,12 +289,10 @@
     <div class="particle" style="left:90%;animation-delay:4s"></div>
   </div>
 
-  <!-- Welcome screen -->
   <div id="welcome-screen">
     <button class="enter-btn" id="enterBtn">Enter</button>
   </div>
 
-  <!-- Main content -->
   <main id="main-content" class="hidden">
     <div class="main-center">
       <h1 class="nickname">SKETH</h1>
@@ -361,7 +347,6 @@
         </div>
       </div>
       
-      <!-- Секция "О себе" -->
 <div class="section">
   <h2>О себе</h2>
   <div class="about-content">
@@ -389,11 +374,10 @@
   </div>
 </div>
       
-            <!-- Новая секция "Мои игры" -->
       <div class="section">
         <h2>Мои игры</h2>
         <div class="games-grid" id="gamesGrid">
-          <!-- Игры будут добавляться через JavaScript -->
+          
         </div>
       </div>
     </div>
@@ -409,13 +393,11 @@
       mainContent.classList.remove('hidden');
     });
 
-    // Функция для копирования в буфер обмена
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
     return true;
   } catch (err) {
-    // Fallback для старых браузеров
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
@@ -426,25 +408,19 @@ async function copyToClipboard(text) {
   }
 }
 
-// Функция обработки клика по кнопке (только копирование)
 function handleLinkClick(btn, isRepo = false) {
   const link = btn.dataset.link;
   const desc = btn.dataset.desc || '';
   
   if (!link) return;
   
-  // Копируем оригинальную ссылку (без изменений)
   copyToClipboard(link).then(() => {
-    // Показываем уведомление о копировании
     showCopyNotification(btn);
   });
   
-  // Убрал открытие ссылки - теперь только копирование
 }
 
-// Функция показа уведомления о копировании
 function showCopyNotification(btn) {
-  // Создаем элемент уведомления
   const notification = document.createElement('div');
   notification.textContent = 'Ссылка скопированна!';
   notification.style.cssText = `
@@ -464,13 +440,11 @@ function showCopyNotification(btn) {
   
   document.body.appendChild(notification);
   
-  // Удаляем уведомление через 2 секунды
   setTimeout(() => {
     notification.remove();
   }, 2000);
 }
 
-// Добавляем анимацию для уведомления
 const style = document.createElement('style');
 style.textContent = `
   @keyframes fadeInOut {
@@ -482,7 +456,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Обработчики для кнопок (только копирование)
 document.querySelectorAll('.link-btn').forEach(btn => {
   btn.addEventListener('click', () => handleLinkClick(btn));
 });
@@ -490,8 +463,6 @@ document.querySelectorAll('.link-btn').forEach(btn => {
 document.querySelectorAll('.repo-btn').forEach(btn => {
   btn.addEventListener('click', () => handleLinkClick(btn, true));
 });
-
-// Оставляем скролл для контейнеров
 document.querySelectorAll('.links,.repos').forEach(c => {
   c.addEventListener('wheel', e => {
     if(e.deltaY !== 0) {
@@ -507,8 +478,6 @@ document.querySelectorAll('.links,.repos').forEach(c => {
       });
     });
 
-    // === МОИ ИГРЫ ===
-    // Просто редактируй этот массив чтобы добавлять/удалять игры
     const myGames = [
       "Wallpaper Engine",
       "Counter-Strike 2",
@@ -572,7 +541,6 @@ document.querySelectorAll('.links,.repos').forEach(c => {
       });
     }
 
-    // Инициализация при загрузке
     renderGames();
   </script>
 </body>
