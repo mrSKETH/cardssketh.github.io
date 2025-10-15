@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SKETH — Neon Profile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKETH — Portfolio</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0b0220;
@@ -13,16 +14,24 @@
       --accent: #c77dff;
       --text: #efe6ff;
       --glass: rgba(255,255,255,0.07);
+      --card-bg: rgba(20, 5, 40, 0.7);
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    * {margin:0;padding:0;box-sizing:border-box;}
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: "Inter", system-ui, sans-serif;
       background: radial-gradient(circle at 20% 20%, #1a0033, #0b0220 70%);
       color: var(--text);
-      min-height:100vh;
-      overflow-x:hidden;
+      min-height: 100vh;
+      overflow-x: hidden;
       position: relative;
+      line-height: 1.6;
     }
 
     .bg-rotate {
@@ -32,250 +41,439 @@
       animation: spin 40s linear infinite;
       z-index: -3;
     }
-    @keyframes spin {to{transform:rotate(360deg)}}
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
     .particles {
-      position: fixed; inset:0; z-index:-2;
-      pointer-events:none;
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
     }
+
     .particle {
-      position:absolute;width:6px;height:6px;
+      position: absolute;
+      width: 6px;
+      height: 6px;
       background: var(--accent);
-      border-radius:50%;
-      box-shadow:0 0 12px var(--accent);
-      opacity:.6;
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+      opacity: .6;
       animation: floatUp 12s linear infinite;
     }
+
     @keyframes floatUp {
-      from{transform:translateY(100vh) scale(.6);opacity:0}
-      20%{opacity:1}
-      to{transform:translateY(-10vh) scale(1);opacity:0}
+      from {
+        transform: translateY(100vh) scale(.6);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+      }
     }
 
     #welcome-screen {
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
       animation: fadeIn 1s ease forwards;
+      padding: 20px;
+      text-align: center;
     }
+
+    .welcome-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      text-shadow: 0 0 25px rgba(106,0,255,0.9), 0 0 50px rgba(138,43,226,0.7);
+      margin-bottom: 10px;
+    }
+
+    .welcome-subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      max-width: 600px;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
     .enter-btn {
-      background: linear-gradient(90deg,var(--purple-1),var(--purple-2));
-      padding:18px 42px;
-      border-radius:20px;
-      font-size:22px;font-weight:700;
-      color:#fff;cursor:pointer;
-      border:none;outline:none;
-      text-shadow:0 0 8px rgba(106,0,255,0.9);
-      box-shadow:0 0 25px rgba(106,0,255,0.6);
-      transition: all 0.4s ease;
+      background: linear-gradient(90deg, var(--purple-1), var(--purple-2));
+      padding: 18px 42px;
+      border-radius: 50px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      text-shadow: 0 0 8px rgba(106,0,255,0.9);
+      box-shadow: 0 0 25px rgba(106,0,255,0.6);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
     .enter-btn:hover {
       transform: scale(1.15) translateY(-5px);
-      box-shadow:0 0 50px rgba(138,43,226,1);
+      box-shadow: 0 0 50px rgba(138,43,226,1);
     }
 
-    .hidden {display:none;}
+    .enter-btn:hover::before {
+      left: 100%;
+    }
+
+    .hidden {
+      display: none;
+    }
 
     main {
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:60px 20px;
-      opacity:0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 60px 20px;
+      opacity: 0;
       animation: fadeInUp 1s ease forwards;
-      animation-delay:.6s;
+      animation-delay: .6s;
     }
+
     .main-center {
-      max-width:1100px;
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:30px;
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-1), var(--purple-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      box-shadow: 0 0 30px rgba(106,0,255,0.7);
+      margin-bottom: 10px;
+      border: 3px solid rgba(255,255,255,0.1);
     }
 
     .nickname {
-      font-size:52px;
-      font-weight:900;
-      text-shadow:0 0 25px rgba(106,0,255,0.9),0 0 50px rgba(138,43,226,0.7);
-      white-space:nowrap;
-      border-right:3px solid var(--accent);
-      overflow:hidden;
-      width:0;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      text-shadow: 0 0 25px rgba(106,0,255,0.9), 0 0 50px rgba(138,43,226,0.7);
+      white-space: nowrap;
+      border-right: 3px solid var(--accent);
+      overflow: hidden;
+      width: 0;
       animation: typing 3s steps(12) forwards, blink .7s step-end infinite;
     }
-    @keyframes typing {to{width:12ch}}
-    @keyframes blink {50%{border-color:transparent}}
+
+    @keyframes typing {
+      to { width: 12ch; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      max-width: 600px;
+    }
 
     .section {
-      width:100%;
-      background: var(--glass);
+      width: 100%;
+      background: var(--card-bg);
       backdrop-filter: blur(15px) saturate(180%);
-      border-radius:20px;
-      padding:24px;
-      box-shadow:0 0 25px rgba(106,0,255,0.3);
-      transition: transform .4s ease, box-shadow .4s ease;
-      perspective:1000px;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(106,0,255,0.3);
+      transition: var(--transition);
+      border: 1px solid rgba(106,0,255,0.2);
     }
+
     .section:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow:0 0 45px rgba(138,43,226,0.6);
+      transform: translateY(-6px);
+      box-shadow: 0 0 45px rgba(138,43,226,0.6);
     }
+
     .section h2 {
-      text-align:center;
-      margin-bottom:16px;
-      font-size:22px;
-      text-shadow:0 0 10px rgba(106,0,255,0.6);
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 24px;
+      text-shadow: 0 0 10px rgba(106,0,255,0.6);
+      position: relative;
+      display: inline-block;
+      width: 100%;
     }
 
-    .links, .repos {
-      display:flex; gap:16px;
-      overflow-x:auto;
-      padding-bottom:8px;
-      scroll-behavior:smooth;
-    }
-    .links::-webkit-scrollbar, .repos::-webkit-scrollbar {display:none;}
-
-    .link-btn, .repo-btn {
-      background:linear-gradient(135deg,var(--purple-1),var(--purple-2));
-      color:#fff; font-weight:600;
-      padding:12px 20px;
-      border-radius:14px;
-      flex-shrink:0;
-      white-space:nowrap;
-      display:flex; align-items:center; gap:8px;
-      text-decoration:none; cursor:pointer;
-      box-shadow:0 0 15px rgba(106,0,255,0.4);
-      transition: all .3s ease;
-    }
-    .link-btn:hover, .repo-btn:hover {
-      transform:scale(1.12) rotate(-1deg);
-      box-shadow:0 0 30px rgba(138,43,226,1);
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--purple-1), var(--purple-2));
+      border-radius: 3px;
     }
 
-    .link-display, .repo-display {
-      margin-top:8px;
-      padding:6px 12px;
-      border-radius:10px;
-      background:rgba(255,255,255,0.12);
-      font-size:14px;
-      opacity:0; max-height:0;
-      overflow:hidden;
-      transition:all 0.4s ease;
+    .links-grid, .repos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
     }
-    .show {opacity:1;max-height:60px;}
+
+    .link-card, .repo-card {
+      background: linear-gradient(135deg, rgba(106,0,255,0.15), rgba(139,92,246,0.1));
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid rgba(106,0,255,0.2);
+      color: var(--text);
+    }
+
+    .link-card:hover, .repo-card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(106,0,255,0.4);
+      background: linear-gradient(135deg, rgba(106,0,255,0.25), rgba(139,92,246,0.2));
+    }
+
+    .link-icon, .repo-icon {
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.1);
+      flex-shrink: 0;
+    }
+
+    .link-text, .repo-text {
+      flex: 1;
+    }
+
+    .link-title, .repo-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .link-desc, .repo-desc {
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .about-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(106,0,255,0.2);
+    }
+
+    .about-item:last-child {
+      border-bottom: none;
+    }
+
+    .about-label {
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: 0 0 10px rgba(199,125,255,0.5);
+      min-width: 140px;
+      flex-shrink: 0;
+    }
+
+    .about-value {
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .about-item {
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideInRight 0.6s ease forwards;
+    }
+
+    .about-item:nth-child(1) { animation-delay: 0.1s; }
+    .about-item:nth-child(2) { animation-delay: 0.2s; }
+    .about-item:nth-child(3) { animation-delay: 0.3s; }
+    .about-item:nth-child(4) { animation-delay: 0.4s; }
+    .about-item:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes slideInRight {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
 
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
     }
-    
+
     .game-card {
       background: rgba(255,255,255,0.08);
       border-radius: 12px;
-      padding: 15px;
+      padding: 18px;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: var(--transition);
       border: 1px solid rgba(106,0,255,0.2);
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
-    
+
     .game-card:hover {
       background: rgba(255,255,255,0.12);
       transform: translateY(-5px) scale(1.03);
       box-shadow: 0 10px 25px rgba(106,0,255,0.4);
     }
-    
+
     .game-icon {
       font-size: 24px;
-      margin-bottom: 10px;
       color: var(--accent);
       text-shadow: 0 0 10px var(--accent);
     }
-    
+
     .game-name {
       font-weight: 500;
-      font-size: 16px;
+      font-size: 14px;
     }
 
-    @keyframes fadeIn {from{opacity:0} to{opacity:1}}
-    @keyframes fadeInUp {from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);}}
-
-    @media(max-width:720px) {
-      .nickname{font-size:34px}
-      .section{padding:16px}
-      .link-btn,.repo-btn{padding:10px 14px;font-size:14px}
-      .games-grid{grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));}
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
-  
-.about-content {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
-  margin: 0 auto;
-}
 
-.about-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(106,0,255,0.2);
-}
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-.about-item:last-child {
-  border-bottom: none;
-}
+    .notification {
+      position: fixed;
+      background: linear-gradient(135deg, var(--purple-1), var(--purple-2));
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 1000;
+      animation: fadeInOut 2s ease-in-out;
+      box-shadow: 0 0 20px rgba(106,0,255,0.6);
+      top: 20px;
+      right: 20px;
+    }
 
-.about-label {
-  font-weight: 700;
-  color: var(--accent);
-  text-shadow: 0 0 10px rgba(199,125,255,0.5);
-  min-width: 100px;
-  flex-shrink: 0;
-}
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-20px); }
+      20% { opacity: 1; transform: translateY(0); }
+      80% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
 
-.about-value {
-  flex: 1;
-  line-height: 1.5;
-}
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-top: 40px;
+    }
 
-.about-item {
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: slideInRight 0.6s ease forwards;
-}
+    @media (max-width: 768px) {
+      .nickname {
+        font-size: 2.5rem;
+      }
+      
+      .section {
+        padding: 20px;
+      }
+      
+      .links-grid, .repos-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+      
+      .about-item {
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .about-label {
+        min-width: auto;
+      }
+    }
 
-.about-item:nth-child(1) { animation-delay: 0.1s; }
-.about-item:nth-child(2) { animation-delay: 0.2s; }
-.about-item:nth-child(3) { animation-delay: 0.3s; }
-.about-item:nth-child(4) { animation-delay: 0.4s; }
-
-@keyframes slideInRight {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@media (max-width: 720px) {
-  .about-item {
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .about-label {
-    min-width: auto;
-  }
-}
-  
+    @media (max-width: 480px) {
+      .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 36px;
+      }
+      
+      .games-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -290,259 +488,420 @@
   </div>
 
   <div id="welcome-screen">
-    <button class="enter-btn" id="enterBtn">Enter</button>
+    <h1 class="welcome-title">SKETH</h1>
+    <p class="welcome-subtitle">Ты дойствительно хочешь посмотреть?</p>
+    <button class="enter-btn" id="enterBtn">
+      <i class="fas fa-arrow-right"></i> Войти в портфолио
+    </button>
   </div>
 
   <main id="main-content" class="hidden">
     <div class="main-center">
-      <h1 class="nickname">SKETH</h1>
-
-      <div class="section">
-        <h2>What?</h2>
-        <p style="text-align:center;max-width:700px;margin:0 auto;">
-          ¿qué quieres?
-        </p>
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <i class="fas fa-code"></i>
+        </div>
+        <h1 class="nickname">SKETH</h1>
+        <p class="tagline">Дурачек какой-то</p>
       </div>
 
-
+      <div class="section">
+        <h2>Обо мне</h2>
+        <div class="about-content">
+          <div class="about-item">
+            <span class="about-label">Возраст:</span>
+            <span class="about-value">2к7 от рождения Христа</span>
+          </div>
+          <div class="about-item">
+            <span class="about-label">Интересы:</span>
+            <span class="about-value">HTML, электрогитара, сноубординг, Linux</span>
+          </div>
+          <div class="about-item">
+            <span class="about-label">Состав FMBSQ:</span>
+            <span class="about-value">Antipathy, eropbatq, Watcher, SKETH</span>
+          </div>
+          <div class="about-item">
+            <span class="about-label">Контакты для связи:</span>
+            <span class="about-value">@mrSKETH (Telegram дополнительный)</span>
+          </div>
+        </div>
+      </div>
 
       <div class="section">
         <h2>Контакты</h2>
-        <div class="links">
-          <div><div class="link-btn" data-link="https://t.me/+BYAMQj_TYpQ2ZGE1"><i class="fa-brands fa-telegram"></i> Telegram chanel</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="@mokmorka"><i class="fa-brands fa-telegram"></i> Telegram (Основной)</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="@mrSKETH"><i class="fa-brands fa-telegram"></i> Telegram (Доп)</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="mrsketh"><i class="fa-brands fa-discord"></i> Discord</div><div class="link-display"></div></div>
+        <div class="links-grid">
+          <a class="link-card" data-link="https://t.me/perehodnikske7h">
+            <div class="link-icon">
+              <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Telegram канал</div>
+              <div class="link-desc">Мой новый тгк</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="@mokmorka">
+            <div class="link-icon">
+              <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Telegram</div>
+              <div class="link-desc">Основной аккаунт</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="@mrSKETH">
+            <div class="link-icon">
+              <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Telegram</div>
+              <div class="link-desc">Дополнительный аккаунт</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="mrsketh">
+            <div class="link-icon">
+              <i class="fa-brands fa-discord"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Discord</div>
+              <div class="link-desc">Основной</div>
+            </div>
+          </a>
+
         </div>
       </div>
 
       <div class="section">
-        <h2>Соцсети</h2>
-        <div class="links">
-          <div><div class="link-btn" data-link="https://youtube.com/@qSKETHp"><i class="fa-brands fa-youtube"></i> YouTube</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="https://tiktok.com/@sketh696"><i class="fa-brands fa-tiktok"></i> TikTok</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="https://reddit.com/user/SKETHqq"><i class="fa-brands fa-reddit"></i> Reddit</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="https://open.spotify.com/user/31t552nhwqalsle5fysfp5ohefda"><i class="fa-brands fa-tiktok"></i>Spotify</div><div class="link-display"></div></div>
+        <h2>Социальные сети</h2>
+        <div class="links-grid">
+          <a class="link-card" data-link="https://youtube.com/@qSKETHp">
+            <div class="link-icon">
+              <i class="fa-brands fa-youtube"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">YouTube</div>
+              <div class="link-desc">Контент о разном</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="https://tiktok.com/@sketh696">
+            <div class="link-icon">
+              <i class="fa-brands fa-tiktok"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">TikTok</div>
+              <div class="link-desc">Эдиты</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="https://reddit.com/user/SKETHqq">
+            <div class="link-icon">
+              <i class="fa-brands fa-reddit"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Reddit</div>
+              <div class="link-desc">Мой реддит, но постов там не будет</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="https://open.spotify.com/user/31t552nhwqalsle5fysfp5ohefda">
+            <div class="link-icon">
+              <i class="fa-brands fa-spotify"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Spotify</div>
+              <div class="link-desc">Мои плейлисты</div>
+            </div>
+          </a>
+
         </div>
       </div>
 
       <div class="section">
-        <h2>Игры</h2>
-        <div class="links">
-          <div><div class="link-btn" data-link="https://steamcommunity.com/id/mrSKETH/"><i class="fa-brands fa-steam"></i> Steam</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="https://steamcommunity.com/profiles/76561198846133724/"><i class="fa-brands fa-steam"></i> Steam(cs2)</div><div class="link-display"></div></div>
-          <div><div class="link-btn" data-link="https://worldofwarcraft.blizzard.com/ru-ru/character/eu/eversong/Хскетчх/"><i class="fa-solid fa-gamepad"></i> World Of Warcraft(новый)</div><div class="link-display"></div></div>
+        <h2>Игровые профили</h2>
+        <div class="links-grid">
+          <a class="link-card" data-link="https://steamcommunity.com/id/mrSKETH/">
+            <div class="link-icon">
+              <i class="fa-brands fa-steam"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Steam</div>
+              <div class="link-desc">Основной аккаунт</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="https://steamcommunity.com/profiles/76561198846133724/">
+            <div class="link-icon">
+              <i class="fa-brands fa-steam"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">Steam (CS2)</div>
+              <div class="link-desc">Для CS2</div>
+            </div>
+          </a>
+
+          <a class="link-card" data-link="https://worldofwarcraft.blizzard.com/ru-ru/character/eu/eversong/Хскетчх/">
+            <div class="link-icon">
+              <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">World of Warcraft</div>
+              <div class="link-desc">Новый персонаж</div>
+            </div>
+          </a>
+
         </div>
       </div>
 
       <div class="section">
         <h2>GitHub</h2>
-        <div class="links">
-          <div><div class="link-btn" data-link="https://github.com/mrSKETH"><i class="fa-brands fa-github"></i> GitHub</div><div class="link-display"></div></div>
+        <div class="links-grid">
+          <a class="link-card" data-link="https://github.com/mrSKETH">
+            <div class="link-icon">
+              <i class="fa-brands fa-github"></i>
+            </div>
+            <div class="link-text">
+              <div class="link-title">GitHub профиль</div>
+            </div>
+          </a>
         </div>
-        <h3 style="text-align:center;margin:15px 0;">Репозитории</h3>
-        <div class="repos">
-          <div><div class="repo-btn" data-link="https://github.com/mrSKETH/Arch-install-guide---SKETH" data-desc="">Arch Install Guide</div><div class="repo-display"></div></div>
-          <div><div class="repo-btn" data-link="https://github.com/mrSKETH/PCCP-sketh" data-desc="">PCCP</div><div class="repo-display"></div></div>
+        
+        <h3 style="text-align:center; margin: 25px 0 15px;">Репозитории</h3>
+        <div class="repos-grid">
+          <a class="repo-card" data-link="https://github.com/mrSKETH/Arch-install-guide---SKETH">
+            <div class="repo-icon">
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <div class="repo-text">
+              <div class="repo-title">Arch Install Guide</div>
+              <div class="repo-desc">Руководство по установке Arch Linux</div>
+            </div>
+          </a>
+
+          <a class="repo-card" data-link="https://github.com/mrSKETH/PCCP-sketh">
+            <div class="repo-icon">
+              <i class="fas fa-code"></i>
+            </div>
+            <div class="repo-text">
+              <div class="repo-title">PCCP</div>
+              <div class="repo-desc">Сборник программ</div>
+            </div>
+          </a>
+
+          <a class="repo-card" data-link="https://mrsketh.github.io/-KCK-9--25-2/">
+            <div class="repo-icon">
+              <i class="fas fa-code"></i>
+            </div>
+            <div class="repo-text">
+              <div class="repo-title">KCK-9-25-2</div>
+              <div class="repo-desc">Расписание для KCK(9)-25-2</div>
+            </div>
+          </a>
+
+          <a class="repo-card" data-link="https://mrsketh.github.io/FBSQ-site/  ">
+            <div class="repo-icon">
+              <i class="fas fa-code"></i>
+            </div>
+            <div class="repo-text">
+              <div class="repo-title">FBSQ-site</div>
+              <div class="repo-desc">Сайт для моей команды</div>
+            </div>
+          </a>
+
+
         </div>
       </div>
-      
-<div class="section">
-  <h2>О себе</h2>
-  <div class="about-content">
-    <div class="about-item">
-      <span class="about-label">Возраст:</span>
-      <span class="about-value" id="ageValue">🚫 Доступ ограничен 🚫</span>
-    </div>
-    <div class="about-item">
-      <span class="about-label">А?:</span>
-      <span class="about-value" id="interestsValue">ага</span>
-    </div>
-    <div class="about-item">
-      <span class="about-label">"ОПГ":</span>
-      <span class="about-value" id="aboutValue">Femboy $quad🍆🍆🍆</span>
-      <span class="about-value" id="aboutValue">Antipathy, eropbatq, Watcher, SKETH</span>
-    </div>
-<div class="about-item">
-      <span class="about-label">Контактные лица:</span>
-      <span class="about-value" id="interestsValue">qwzzz, kittys, засекречено</span>
-</div>
-    <div class="about-item">
-      <span class="about-label">Важные вопросы к:</span>
-      <span class="about-value"interestsValue">@doc70r</span>
-    </div>
-  </div>
-</div>
-      
+
       <div class="section">
-        <h2>Мои игры</h2>
+        <h2>Игровая библиотека</h2>
         <div class="games-grid" id="gamesGrid">
-          
+          <!-- Games will be populated by JavaScript -->
         </div>
       </div>
+
+      <footer>
+        <p>© 2025 SKETH · Сделано с <i class="fas fa-heart" style="color: var(--accent);"></i> и кофеином</p>
+      </footer>
     </div>
   </main>
 
   <script>
-    const enterBtn=document.getElementById('enterBtn');
-    const welcome=document.getElementById('welcome-screen');
-    const mainContent=document.getElementById('main-content');
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      const enterBtn = document.getElementById('enterBtn');
+      const welcome = document.getElementById('welcome-screen');
+      const mainContent = document.getElementById('main-content');
 
-    enterBtn.addEventListener('click',()=>{
-      welcome.style.display='none';
-      mainContent.classList.remove('hidden');
-    });
-
-async function copyToClipboard(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch (err) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    return true;
-  }
-}
-
-function handleLinkClick(btn, isRepo = false) {
-  const link = btn.dataset.link;
-  const desc = btn.dataset.desc || '';
-  
-  if (!link) return;
-  
-  copyToClipboard(link).then(() => {
-    showCopyNotification(btn);
-  });
-  
-}
-
-function showCopyNotification(btn) {
-  const notification = document.createElement('div');
-  notification.textContent = 'Ссылка скопированна!';
-  notification.style.cssText = `
-    position: fixed;
-    background: linear-gradient(135deg, var(--purple-1), var(--purple-2));
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    z-index: 1000;
-    animation: fadeInOut 2s ease-in-out;
-    box-shadow: 0 0 20px rgba(106,0,255,0.6);
-    top: 20px;
-    right: 20px;
-  `;
-  
-  document.body.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.remove();
-  }, 2000);
-}
-
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(-20px); }
-    20% { opacity: 1; transform: translateY(0); }
-    80% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-20px); }
-  }
-`;
-document.head.appendChild(style);
-
-document.querySelectorAll('.link-btn').forEach(btn => {
-  btn.addEventListener('click', () => handleLinkClick(btn));
-});
-
-document.querySelectorAll('.repo-btn').forEach(btn => {
-  btn.addEventListener('click', () => handleLinkClick(btn, true));
-});
-document.querySelectorAll('.links,.repos').forEach(c => {
-  c.addEventListener('wheel', e => {
-    if(e.deltaY !== 0) {
-      e.preventDefault();
-      c.scrollLeft += e.deltaY;
-    }
-  });
-});
-
-    document.querySelectorAll('.links,.repos').forEach(c=>{
-      c.addEventListener('wheel',e=>{
-        if(e.deltaY!==0){e.preventDefault();c.scrollLeft+=e.deltaY;}
+      // Enter button click handler
+      enterBtn.addEventListener('click', () => {
+        welcome.style.display = 'none';
+        mainContent.classList.remove('hidden');
       });
-    });
 
-    const myGames = [
-      "Wallpaper Engine",
-      "Counter-Strike 2",
-      "World of Warcraft",
-      "Minecraft",
-      "Minecraft Dungeon",
-      "Minecraft Legends",
-      "GTA V (Steam, Epic Games, Rockstar games",
-      "GTA V RP",
-      "Skyrim",
-      "Terraria+TmodLoader",
-      "Rust",
-      "Counter-Strike Source",
-      "Dead by Daylight",
-      "Assetto cprsa",
-      "Euro truck simulator 2",
-      "Arma 3",
-      "No one survived",
-      "Metro 2033 exodus",
-      "Garrys mod",
-      "Repo",
-      "Valheim",
-      "Metro lost light",
-      "Deep rock galactic",
-      "The forest",
-      "My summer car",
-      "Raft",
-      "Phasmophobia",
-      "Grocery store simulator",
-      "Dont starve+Together",
-      "Half-life",
-      "Farming Simulator 22",
-      "Ghostrunner",
-      "PAYDAY 2",
-      "Fallout: New Vegas",
-      "DEATH STRANDING",
-      "Dying Light",
-      "Genshin impact",
-      "Borderlands",
-      "Watch dogs 2",
-      "Far cry 5",
-      "Assasin creet 1, 2, origin, odisey",
-      "The crew 2",
-      "Steep",
-      "Fortnite",
-    ];
+      // Copy to clipboard function
+      async function copyToClipboard(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (err) {
+          const textArea = document.createElement('textarea');
+          textArea.value = text;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          return true;
+        }
+      }
 
-    const gamesGrid = document.getElementById('gamesGrid');
-    const gameIcons = ['+'];
+      // Handle link clicks
+      function handleLinkClick(event) {
+        event.preventDefault();
+        const link = this.getAttribute('data-link');
+        
+        if (!link) return;
+        
+        copyToClipboard(link).then(() => {
+          showCopyNotification();
+        });
+      }
 
-    function renderGames() {
-      gamesGrid.innerHTML = '';
+      // Show copy notification
+      function showCopyNotification() {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = 'Ссылка скопирована в буфер обмена!';
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.remove();
+        }, 2000);
+      }
+
+      // Add event listeners to all link cards
+      document.querySelectorAll('.link-card, .repo-card').forEach(card => {
+        card.addEventListener('click', handleLinkClick);
+      });
+
+      // Games data
+      const myGames = [
+        "Wallpaper Engine",
+        "Counter-Strike 2",
+        "World of Warcraft",
+        "Minecraft",
+        "Minecraft Dungeon",
+        "Minecraft Legends",
+        "GTA V (Steam, Epic Games, Rockstar games)",
+        "GTA V RP",
+        "Skyrim",
+        "Terraria + TmodLoader",
+        "Rust",
+        "Counter-Strike Source",
+        "Dead by Daylight",
+        "Assetto Corsa",
+        "Euro Truck Simulator 2",
+        "Arma 3",
+        "No One Survived",
+        "Metro 2033 Exodus",
+        "Garry's Mod",
+        "Repo",
+        "Valheim",
+        "Metro Lost Light",
+        "Deep Rock Galactic",
+        "The Forest",
+        "My Summer Car",
+        "Raft",
+        "Phasmophobia",
+        "Grocery Store Simulator",
+        "Don't Starve + Together",
+        "Half-life",
+        "Farming Simulator 22",
+        "Ghostrunner",
+        "PAYDAY 2",
+        "Fallout: New Vegas",
+        "DEATH STRANDING",
+        "Dying Light",
+        "Genshin Impact",
+        "Borderlands",
+        "Watch Dogs 2",
+        "Far Cry 5",
+        "Assassin's Creed (1, 2, Origin, Odyssey)",
+        "The Crew 2",
+        "Steep",
+        "Fortnite"
+      ];
+
+      const gameIcons = [
+        'fas fa-desktop',
+        'fas fa-crosshairs',
+        'fas fa-dragon',
+        'fas fa-cube',
+        'fas fa-dungeon',
+        'fas fa-chess-knight',
+        'fas fa-car',
+        'fas fa-user-secret',
+        'fas fa-mountain',
+        'fas fa-hammer',
+        'fas fa-hard-hat',
+        'fas fa-gun',
+        'fas fa-mask',
+        'fas fa-racing-helmet',
+        'fas fa-truck',
+        'fas fa-helmet-battle',
+        'fas fa-skull',
+        'fas fa-subway',
+        'fas fa-toolbox',
+        'fas fa-code-branch',
+        'fas fa-axe',
+        'fas fa-traffic-light',
+        'fas fa-pickaxe',
+        'fas fa-tree',
+        'fas fa-car-side',
+        'fas fa-water',
+        'fas fa-ghost',
+        'fas fa-shopping-cart',
+        'fas fa-campfire',
+        'fas fa-vial',
+        'fas fa-tractor',
+        'fas fa-running',
+        'fas fa-mask',
+        'fas fa-radiation',
+        'fas fa-baby',
+        'fas fa-running',
+        'fas fa-globe-asia',
+        'fas fa-gun',
+        'fas fa-laptop-code',
+        'fas fa-mountain',
+        'fas fa-history',
+        'fas fa-car',
+        'fas fa-snowboarding',
+        'fas fa-fort-awesome'
+      ];
+
+      // Render games
+      const gamesGrid = document.getElementById('gamesGrid');
       
-      myGames.forEach((game, index) => {
-        const gameCard = document.createElement('div');
-        gameCard.className = 'game-card';
-        gameCard.innerHTML = `
-          <div class="game-icon">${gameIcons[index % gameIcons.length]}</div>
-          <div class="game-name">${game}</div>
-        `;
-        gamesGrid.appendChild(gameCard);
-      });
-    }
+      function renderGames() {
+        gamesGrid.innerHTML = '';
+        
+        myGames.forEach((game, index) => {
+          const gameCard = document.createElement('div');
+          gameCard.className = 'game-card';
+          gameCard.innerHTML = `
+            <div class="game-icon">
+              <i class="${gameIcons[index]}"></i>
+            </div>
+            <div class="game-name">${game}</div>
+          `;
+          gamesGrid.appendChild(gameCard);
+        });
+      }
 
-    renderGames();
+      renderGames();
+    });
   </script>
 </body>
 </html>
