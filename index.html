@@ -34,6 +34,79 @@
       line-height: 1.6;
     }
 
+    /* Навигационное меню */
+    .nav-menu {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+
+    .nav-toggle {
+      background: linear-gradient(90deg, var(--purple-1), var(--purple-2));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(106,0,255,0.5);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(138,43,226,0.7);
+    }
+
+    .nav-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 10px;
+      background: var(--card-bg);
+      backdrop-filter: blur(15px) saturate(180%);
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 0 25px rgba(106,0,255,0.3);
+      border: 1px solid rgba(106,0,255,0.2);
+      min-width: 200px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition);
+    }
+
+    .nav-dropdown.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .nav-link {
+      display: block;
+      padding: 12px 15px;
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: var(--transition);
+      margin-bottom: 5px;
+    }
+
+    .nav-link:hover {
+      background: rgba(106,0,255,0.2);
+      transform: translateX(5px);
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
     .bg-rotate {
       position: fixed;
       inset: 0;
@@ -477,6 +550,21 @@
   </style>
 </head>
 <body>
+  <!-- Навигационное меню -->
+  <div class="nav-menu">
+    <button class="nav-toggle" id="navToggle">
+      <i class="fas fa-bars"></i> Меню
+    </button>
+    <div class="nav-dropdown" id="navDropdown">
+      <a href="#about" class="nav-link"><i class="fas fa-user"></i> Обо мне</a>
+      <a href="#contacts" class="nav-link"><i class="fas fa-address-book"></i> Контакты</a>
+      <a href="#social" class="nav-link"><i class="fas fa-share-alt"></i> Социальные сети</a>
+      <a href="#games" class="nav-link"><i class="fas fa-gamepad"></i> Игровые профили</a>
+      <a href="#github" class="nav-link"><i class="fab fa-github"></i> GitHub</a>
+      <a href="#library" class="nav-link"><i class="fas fa-book"></i> Игровая библиотека</a>
+    </div>
+  </div>
+
   <div class="bg-rotate"></div>
 
   <div class="particles">
@@ -502,10 +590,9 @@
           <i class="fas fa-code"></i>
         </div>
         <h1 class="nickname">SKETH</h1>
-        <p class="tagline">Дурачек какой-то</p>
       </div>
 
-      <div class="section">
+      <div class="section" id="about">
         <h2>Обо мне</h2>
         <div class="about-content">
           <div class="about-item">
@@ -527,7 +614,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="contacts">
         <h2>Контакты</h2>
         <div class="links-grid">
           <a class="link-card" data-link="https://t.me/perehodnikske7h">
@@ -573,7 +660,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="social">
         <h2>Социальные сети</h2>
         <div class="links-grid">
           <a class="link-card" data-link="https://youtube.com/@qSKETHp">
@@ -619,7 +706,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="games">
         <h2>Игровые профили</h2>
         <div class="links-grid">
           <a class="link-card" data-link="https://steamcommunity.com/id/mrSKETH/">
@@ -655,7 +742,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="github">
         <h2>GitHub</h2>
         <div class="links-grid">
           <a class="link-card" data-link="https://github.com/mrSKETH">
@@ -724,7 +811,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" id="library">
         <h2>Игровая библиотека</h2>
         <div class="games-grid" id="gamesGrid">
         </div>
@@ -741,6 +828,24 @@
       const enterBtn = document.getElementById('enterBtn');
       const welcome = document.getElementById('welcome-screen');
       const mainContent = document.getElementById('main-content');
+      const navToggle = document.getElementById('navToggle');
+      const navDropdown = document.getElementById('navDropdown');
+
+      // Переключение меню
+      navToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        navDropdown.classList.toggle('active');
+      });
+
+      // Закрытие меню при клике вне его
+      document.addEventListener('click', function() {
+        navDropdown.classList.remove('active');
+      });
+
+      // Предотвращение закрытия при клике внутри меню
+      navDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
 
       enterBtn.addEventListener('click', () => {
         welcome.style.display = 'none';
