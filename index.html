@@ -727,7 +727,6 @@
       <div class="section">
         <h2>Игровая библиотека</h2>
         <div class="games-grid" id="gamesGrid">
-          <!-- Games will be populated by JavaScript -->
         </div>
       </div>
 
@@ -738,19 +737,16 @@
   </main>
 
   <script>
-    // Initialize the page
     document.addEventListener('DOMContentLoaded', function() {
       const enterBtn = document.getElementById('enterBtn');
       const welcome = document.getElementById('welcome-screen');
       const mainContent = document.getElementById('main-content');
 
-      // Enter button click handler
       enterBtn.addEventListener('click', () => {
         welcome.style.display = 'none';
         mainContent.classList.remove('hidden');
       });
 
-      // Copy to clipboard function
       async function copyToClipboard(text) {
         try {
           await navigator.clipboard.writeText(text);
@@ -766,7 +762,6 @@
         }
       }
 
-      // Handle link clicks
       function handleLinkClick(event) {
         event.preventDefault();
         const link = this.getAttribute('data-link');
@@ -778,7 +773,6 @@
         });
       }
 
-      // Show copy notification
       function showCopyNotification() {
         const notification = document.createElement('div');
         notification.className = 'notification';
@@ -791,12 +785,10 @@
         }, 2000);
       }
 
-      // Add event listeners to all link cards
       document.querySelectorAll('.link-card, .repo-card').forEach(card => {
         card.addEventListener('click', handleLinkClick);
       });
 
-      // Games data
       const myGames = [
         "Wallpaper Engine",
         "SPOTIFY",
@@ -895,7 +887,6 @@
         'fas fa-fort-awesome'
       ];
 
-      // Render games
       const gamesGrid = document.getElementById('gamesGrid');
       
       function renderGames() {
